@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ClaudeService } from './claude.service';
+import { AiService } from './ai.service';
 
 @Injectable()
 export class RecommendationsService {
   constructor(
     private prisma: PrismaService,
-    private claude: ClaudeService,
+    private claude: AiService,
   ) {}
 
   async getRecommendations(userId: string) {
