@@ -1,0 +1,110 @@
+@use '../styles/variables' as v;
+
+// ── Page ─────────────────────────────────────────────────────
+.page {
+  margin: 0 auto;
+  max-width: 42rem;
+  padding: 2rem 1rem;
+}
+
+// ── Heading ───────────────────────────────────────────────────
+.heading {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: v.$text-primary;
+}
+
+// ── Type toggle ───────────────────────────────────────────────
+.typeRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.typeBtn {
+  border-radius: v.$radius-full;
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid v.$border-soft;
+  background: transparent;
+  color: v.$text-muted2;
+  cursor: pointer;
+  transition: v.$transition;
+
+  &:hover {
+    border-color: v.$border-medium;
+    color: v.$text-primary;
+  }
+}
+
+.typeBtnActive {
+  background: v.$indigo-600;
+  border-color: v.$indigo-600;
+  color: #fff;
+
+  &:hover {
+    border-color: v.$indigo-600;
+  }
+}
+
+// ── Search input wrapper ──────────────────────────────────────
+.inputWrap {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: v.$text-muted;
+  pointer-events: none;
+}
+
+.input {
+  @include v.input-base;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.spinnerIcon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: v.$text-muted;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+// ── Results list ──────────────────────────────────────────────
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+// ── Empty / hint messages ─────────────────────────────────────
+.noResults {
+  text-align: center;
+  font-size: 0.875rem;
+  color: v.$text-muted;
+}
+
+.hint {
+  text-align: center;
+  font-size: 0.875rem;
+  color: v.$text-subtle;
+}

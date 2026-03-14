@@ -1,0 +1,154 @@
+// ============================================================
+// Shared SCSS variables for CircleRecs
+// Theme-sensitive values use CSS custom properties (--cr-xxx)
+// so they automatically respond to .dark / :root at runtime.
+// ============================================================
+
+// ── Background colors (theme-sensitive) ──────────────────────
+$bg-base:     var(--cr-bg-base);
+$bg-sidebar:  var(--cr-bg-sidebar);
+$bg-card:     var(--cr-bg-card);
+$bg-card-alt: var(--cr-bg-sidebar);
+$bg-dropdown: var(--cr-bg-dropdown);
+
+// ── Brand / accent colors (fixed) ────────────────────────────
+$indigo-300: #a5b4fc;
+$indigo-400: #818cf8;
+$indigo-500: #6366f1;
+$indigo-600: #4f46e5;
+$violet-400: #a78bfa;
+$violet-600: #7c3aed;
+$amber-300:  #fcd34d;
+$amber-400:  #fbbf24;
+$green-400:  #4ade80;
+$green-600:  #16a34a;
+$red-400:    #f87171;
+$red-500:    #ef4444;
+$blue-400:   #60a5fa;
+$blue-600:   #2563eb;
+
+// ── Text colors (theme-sensitive) ────────────────────────────
+$text-primary:   var(--cr-text);           // full text
+$text-secondary: var(--cr-text-secondary); // ~70%
+$text-muted2:    var(--cr-text-muted2);    // ~50%
+$text-muted:     var(--cr-text-muted);     // ~40%
+$text-subtle:    var(--cr-text-subtle);    // ~30%
+$text-dim:       var(--cr-text-dim);       // ~20%
+$text-faint:     var(--cr-text-dim);       // ~10% → alias
+
+// ── Border / surface (theme-sensitive) ───────────────────────
+$border-subtle:  var(--cr-border-subtle);
+$border-soft:    var(--cr-border-soft);
+$border-medium:  var(--cr-border-medium);
+$surface-soft:   var(--cr-surface-soft);
+$surface-light:  var(--cr-surface-light);
+$surface-hover:  var(--cr-surface-hover);
+
+// ── Border radius (fixed) ─────────────────────────────────────
+$radius-sm:   0.5rem;   // 8px
+$radius-md:   0.75rem;  // 12px
+$radius-lg:   1rem;     // 16px
+$radius-full: 9999px;
+
+// ── Transitions / layout (fixed) ─────────────────────────────
+$transition:    all 0.2s ease;
+$sidebar-width: 14rem;
+
+// ── Mixins ────────────────────────────────────────────────────
+@mixin card {
+  border-radius: $radius-lg;
+  border: 1px solid $border-subtle;
+  background: $surface-soft;
+  padding: 1rem;
+}
+
+@mixin input-base {
+  width: 100%;
+  border-radius: $radius-md;
+  border: 1px solid $border-soft;
+  background: $surface-light;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  color: $text-primary;
+  outline: none;
+  transition: $transition;
+
+  &::placeholder {
+    color: $text-subtle;
+  }
+
+  &:focus {
+    border-color: $indigo-400;
+    box-shadow: 0 0 0 1px $indigo-400;
+  }
+}
+
+@mixin btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: $radius-sm;
+  background: $indigo-600;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  transition: $transition;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: $indigo-500;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: $radius-sm;
+  border: 1px solid $border-soft;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $text-muted2;
+  background: transparent;
+  transition: $transition;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $border-medium;
+    color: $text-primary;
+  }
+}
+
+@mixin user-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: $radius-md;
+  border: 1px solid $border-subtle;
+  background: $surface-soft;
+  padding: 0.75rem 1rem;
+}
+
+@mixin section-heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: $text-muted;
+  margin-bottom: 0.75rem;
+}
+
+@mixin logo-gradient {
+  background: linear-gradient(to right, $indigo-400, $violet-400);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

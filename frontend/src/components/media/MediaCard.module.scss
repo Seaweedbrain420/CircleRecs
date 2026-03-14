@@ -1,0 +1,300 @@
+@use '../../styles/variables' as v;
+
+// ── Card shell ───────────────────────────────────────────────
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: v.$radius-md;
+  border: 1px solid v.$border-soft;
+  background: v.$surface-light;
+  transition: v.$transition;
+}
+
+.cardClickable {
+  cursor: pointer;
+
+  &:hover {
+    border-color: rgba(99, 102, 241, 0.5);
+    background: v.$surface-hover;
+    box-shadow: 0 4px 24px -4px rgba(99, 102, 241, 0.1);
+  }
+
+  &:hover .coverImg {
+    transform: scale(1.05);
+  }
+}
+
+// ── Cover image area ─────────────────────────────────────────
+.coverWrap {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: v.$surface-light;
+}
+
+.coverImg {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.coverPlaceholder {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.coverPlaceholderIcon {
+  height: 3rem;
+  width: 3rem;
+  color: v.$text-dim;
+}
+
+// ── Status badge + dropdown anchor ───────────────────────────
+.badgeAnchor {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 10;
+}
+
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: v.$radius-full;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: v.$transition;
+
+  // Status colour variants via data-attribute
+  &[data-status='WANT'] {
+    background: #475569;
+    color: #e2e8f0;
+  }
+  &[data-status='IN_PROGRESS'] {
+    background: #2563eb;
+    color: #fff;
+  }
+  &[data-status='COMPLETED'] {
+    background: #16a34a;
+    color: #fff;
+  }
+  &[data-status='DROPPED'] {
+    background: #dc2626;
+    color: #fff;
+  }
+}
+
+.statusBadgeEditable {
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 0 1px v.$border-medium;
+  }
+}
+
+.statusBadgeReadonly {
+  cursor: default;
+}
+
+.chevron {
+  height: 0.75rem;
+  width: 0.75rem;
+  opacity: 0.6;
+}
+
+// ── Dropdown panel ────────────────────────────────────────────
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.25rem;
+  width: 11rem;
+  overflow: hidden;
+  border-radius: v.$radius-md;
+  border: 1px solid v.$border-medium;
+  background: v.$bg-dropdown;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+// Rating sub-step
+.ratingStep {
+  padding: 0.75rem;
+}
+
+.ratingLabel {
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: v.$text-muted2;
+}
+
+.ratingRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.ratingStarIcon {
+  height: 0.875rem;
+  width: 0.875rem;
+  flex-shrink: 0;
+  color: #facc15;
+}
+
+.ratingInput {
+  width: 100%;
+  border-radius: v.$radius-sm;
+  border: 1px solid v.$border-soft;
+  background: v.$surface-light;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: v.$text-primary;
+  outline: none;
+
+  &::placeholder {
+    color: v.$text-subtle;
+  }
+
+  &:focus {
+    border-color: v.$indigo-400;
+    box-shadow: 0 0 0 1px v.$indigo-400;
+  }
+}
+
+.completedBtn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  border-radius: v.$radius-sm;
+  background: rgba(22, 163, 74, 0.8);
+  padding: 0.375rem 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #fff;
+  transition: v.$transition;
+  cursor: pointer;
+
+  &:hover {
+    background: #16a34a;
+  }
+}
+
+.completedBtnIcon {
+  height: 0.875rem;
+  width: 0.875rem;
+}
+
+// Status list
+.statusList {
+  padding: 0.25rem 0;
+}
+
+.statusOption {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  color: v.$text-muted2;
+  transition: v.$transition;
+  cursor: pointer;
+
+  &:hover {
+    background: v.$surface-hover;
+  }
+}
+
+.statusOptionActive {
+  color: v.$text-primary;
+  font-weight: 500;
+}
+
+.statusDot {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: v.$radius-full;
+  flex-shrink: 0;
+
+  &[data-status='WANT'] {
+    background: #94a3b8;
+  }
+  &[data-status='IN_PROGRESS'] {
+    background: #60a5fa;
+  }
+  &[data-status='COMPLETED'] {
+    background: #4ade80;
+  }
+  &[data-status='DROPPED'] {
+    background: #f87171;
+  }
+}
+
+.checkIcon {
+  height: 0.75rem;
+  width: 0.75rem;
+  margin-left: auto;
+}
+
+// ── Info section ──────────────────────────────────────────────
+.info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 0.75rem;
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: v.$text-primary;
+}
+
+.subtitle {
+  margin-top: 0.125rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.75rem;
+  color: v.$text-muted2;
+}
+
+.year {
+  font-size: 0.75rem;
+  color: v.$text-muted;
+}
+
+.ratingBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.ratingBadgeIcon {
+  height: 0.75rem;
+  width: 0.75rem;
+  color: #facc15;
+  fill: #facc15;
+}
+
+.ratingBadgeText {
+  font-size: 0.75rem;
+  color: #facc15;
+}

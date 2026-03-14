@@ -1,0 +1,187 @@
+@use '../../styles/variables' as v;
+
+.root {
+  display: flex;
+  min-height: 100vh;
+  background: v.$bg-base;
+  color: v.$text-primary;
+}
+
+// ── Sidebar ──────────────────────────────────────────────────
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  width: v.$sidebar-width;
+  border-right: 1px solid v.$border-subtle;
+  background: v.$bg-sidebar;
+  padding: 1rem;
+}
+
+// ── Logo ─────────────────────────────────────────────────────
+.logoWrap {
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+}
+
+.logoText {
+  @include v.logo-gradient;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+// ── Nav ──────────────────────────────────────────────────────
+.nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: v.$radius-sm;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  transition: v.$transition;
+  text-decoration: none;
+}
+
+.navLinkActive {
+  background: rgba(79, 70, 229, 0.2);
+  color: v.$indigo-300;
+}
+
+.navLinkInactive {
+  color: v.$text-muted2;
+
+  &:hover {
+    background: v.$surface-light;
+    color: v.$text-primary;
+  }
+}
+
+.navIcon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+// ── Bottom section ───────────────────────────────────────────
+.sidebarBottom {
+  border-top: 1px solid v.$border-subtle;
+  padding-top: 1rem;
+}
+
+.profileLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: v.$radius-sm;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: v.$transition;
+  text-decoration: none;
+}
+
+.profileLinkActive {
+  background: rgba(79, 70, 229, 0.1);
+}
+
+.profileLinkInactive {
+  &:hover {
+    background: v.$surface-light;
+  }
+}
+
+.avatar {
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: v.$radius-full;
+  background: v.$indigo-600;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.userInfo {
+  min-width: 0;
+  flex: 1;
+}
+
+.userName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: v.$text-primary;
+}
+
+.userHandle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: v.$text-muted;
+}
+
+.profileIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  color: v.$text-dim;
+}
+
+// ── Action row ───────────────────────────────────────────────
+.actionRow {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.actionBtn {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: v.$radius-sm;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  color: v.$text-muted;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: v.$transition;
+
+  &:hover {
+    background: v.$surface-light;
+    color: v.$text-primary;
+  }
+}
+
+.actionBtnNoFlex {
+  flex: unset;
+}
+
+.actionIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+// ── Main ─────────────────────────────────────────────────────
+.main {
+  margin-left: v.$sidebar-width;
+  flex: 1;
+  overflow-y: auto;
+}

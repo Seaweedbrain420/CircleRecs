@@ -1,0 +1,170 @@
+@use '../../styles/variables' as v;
+
+// ── Backdrop ─────────────────────────────────────────────────
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+// ── Panel ────────────────────────────────────────────────────
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  border-radius: v.$radius-lg;
+  border: 1px solid v.$border-soft;
+  background: v.$bg-card;
+  padding: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+// ── Close button ─────────────────────────────────────────────
+.closeBtn {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: v.$text-muted;
+  transition: v.$transition;
+  cursor: pointer;
+
+  &:hover {
+    color: v.$text-primary;
+  }
+}
+
+.closeBtnIcon {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+// ── Media info row ────────────────────────────────────────────
+.mediaInfo {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.coverImg {
+  height: 5rem;
+  width: 3.5rem;
+  border-radius: v.$radius-sm;
+  object-fit: cover;
+}
+
+.mediaMeta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mediaTitle {
+  font-weight: 600;
+  color: v.$text-primary;
+}
+
+.mediaSubtitle {
+  font-size: 0.875rem;
+  color: v.$text-muted2;
+}
+
+.mediaYear {
+  font-size: 0.75rem;
+  color: v.$text-muted;
+}
+
+// ── Form ──────────────────────────────────────────────────────
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+// ── Field group ───────────────────────────────────────────────
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: v.$text-secondary;
+}
+
+.labelOptional {
+  color: v.$text-muted;
+}
+
+// ── Status grid ───────────────────────────────────────────────
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.statusBtn {
+  border-radius: v.$radius-sm;
+  border: 1px solid v.$border-soft;
+  background: v.$surface-light;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-size: 0.75rem;
+  color: v.$text-muted2;
+  transition: v.$transition;
+  cursor: pointer;
+
+  &:hover {
+    border-color: v.$border-medium;
+  }
+}
+
+.statusBtnActive {
+  border-color: v.$indigo-500;
+  background: rgba(79, 70, 229, 0.2);
+  color: v.$indigo-300;
+}
+
+// ── Rating input ──────────────────────────────────────────────
+.ratingInput {
+  @include v.input-base;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+
+  &::placeholder {
+    color: v.$text-subtle;
+  }
+
+  &:focus {
+    border-color: v.$indigo-400;
+    box-shadow: 0 0 0 1px v.$indigo-400;
+  }
+}
+
+// ── Submit button ─────────────────────────────────────────────
+.submitBtn {
+  width: 100%;
+  border-radius: v.$radius-sm;
+  background: v.$indigo-600;
+  padding: 0.625rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  transition: v.$transition;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: v.$indigo-500;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

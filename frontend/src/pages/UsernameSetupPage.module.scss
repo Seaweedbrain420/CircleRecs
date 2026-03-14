@@ -1,0 +1,174 @@
+@import '../styles/variables';
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-color: $bg-base;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.inner {
+  width: 100%;
+  max-width: 24rem;
+}
+
+.logo {
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  @include logo-gradient;
+}
+
+.welcomeText {
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: $text-muted;
+}
+
+.card {
+  border-radius: $radius-lg;
+  border: 1px solid $border-subtle;
+  background-color: $bg-card-alt;
+  padding: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: $text-secondary;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.inputPrefix {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: $text-subtle;
+}
+
+.input {
+  width: 100%;
+  border-radius: $radius-md;
+  border: 1px solid $border-soft;
+  background-color: $surface-light;
+  padding: 0.75rem 2.5rem 0.75rem 2rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: $text-primary;
+  outline: none;
+  transition: $transition;
+
+  &::placeholder {
+    color: $text-subtle;
+  }
+
+  &:focus {
+    border-color: $indigo-400;
+    box-shadow: 0 0 0 1px $indigo-400;
+  }
+}
+
+.inputStatus {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.statusIcon {
+  height: 1rem;
+  width: 1rem;
+}
+
+.statusAvailable {
+  color: $green-400;
+}
+
+.statusTaken {
+  color: $red-400;
+}
+
+.statusChecking {
+  color: $text-subtle;
+}
+
+.feedback {
+  margin-top: 0.5rem;
+  min-height: 18px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.feedbackError {
+  color: $red-400;
+}
+
+.feedbackSuccess {
+  color: $green-400;
+}
+
+.hint {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: $text-subtle;
+}
+
+.errorMsg {
+  border-radius: $radius-sm;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  background-color: rgba(239, 68, 68, 0.1);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: $red-400;
+}
+
+.submitBtn {
+  width: 100%;
+  border-radius: $radius-md;
+  background-color: $indigo-600;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  transition: $transition;
+  cursor: pointer;
+  border: none;
+
+  &:hover:not(:disabled) {
+    background-color: $indigo-500;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:21st.dev)",
+      "Bash(npm install tailwindcss @tailwindcss/vite tailwind-merge class-variance-authority clsx lucide-react)",
+      "Bash(npm run build)",
+      "Bash(docker compose up -d)",
+      "Bash(npx tsc --noEmit)",
+      "Bash(docker ps --format \"table {{.Names}}\\\\t{{.Status}}\\\\t{{.Ports}}\")",
+      "Bash(npx prisma migrate dev --name init)",
+      "Bash(powershell -Command \"Get-Process -Id 9176,161880 | Select-Object Id,ProcessName\")",
+      "Bash(docker exec circlerecs_postgres psql -U circlerecs_user -d circlerecs -c \"\\\\dt\")",
+      "Bash(npm install bcrypt @types/bcrypt @types/passport-jwt @types/passport-google-oauth20 @types/cookie-parser @types/passport)",
+      "Bash(curl -s -X POST http://localhost:3000/api/auth/register -H \"Content-Type: application/json\" -d \"{\"\"email\"\":\"\"test@test.com\"\",\"\"username\"\":\"\"testuser\"\",\"\"displayName\"\":\"\"Test User\"\",\"\"password\"\":\"\"password123\"\"}\")",
+      "Bash(npm install @nestjs/axios)",
+      "Bash(npm install recharts)"
+    ]
+  }
+}

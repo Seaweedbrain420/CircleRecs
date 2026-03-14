@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Environment files — NEVER commit these
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+
+# Local config — not for deployment
+.npmrc
+
+# Build outputs
+dist/
+build/
+
+# NestJS
+backend/dist/
+
+# Vite
+frontend/dist/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Docker volumes (local data, not committed)
+postgres_data/
+redis_data/

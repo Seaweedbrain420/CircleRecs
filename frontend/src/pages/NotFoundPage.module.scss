@@ -1,0 +1,50 @@
+@import '../styles/variables';
+
+.page {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $bg-base;
+  text-align: center;
+}
+
+.code {
+  font-size: 3.75rem;
+  line-height: 1;
+  font-weight: 700;
+  color: $text-dim;
+}
+
+.heading {
+  margin-top: 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.description {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: $text-muted;
+}
+
+.homeLink {
+  margin-top: 1.5rem;
+  border-radius: $radius-sm;
+  background-color: $indigo-600;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  transition: $transition;
+
+  &:hover {
+    background-color: $indigo-500;
+  }
+}

@@ -1,0 +1,177 @@
+@use '../styles/variables' as v;
+
+// ── Page ─────────────────────────────────────────────────────
+.page {
+  padding: 2rem 1rem;
+
+  @media (min-width: 768px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+// ── Header ───────────────────────────────────────────────────
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: v.$text-primary;
+}
+
+.addBtn {
+  @include v.btn-primary;
+  padding: 0.5rem 0.75rem;
+}
+
+.addBtnIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+// ── Filter rows ───────────────────────────────────────────────
+.filterRow {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.typeFilterRow {
+  margin-bottom: 0.75rem;
+}
+
+.statusFilterRow {
+  margin-bottom: 1.5rem;
+}
+
+// ── Tab buttons ───────────────────────────────────────────────
+.tab {
+  flex-shrink: 0;
+  border-radius: v.$radius-full;
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid v.$border-soft;
+  background: transparent;
+  color: v.$text-muted2;
+  cursor: pointer;
+  transition: v.$transition;
+
+  &:hover {
+    border-color: v.$border-medium;
+    color: v.$text-primary;
+  }
+}
+
+.tabActive {
+  background: v.$indigo-600;
+  border-color: v.$indigo-600;
+  color: #fff;
+
+  &:hover {
+    border-color: v.$indigo-600;
+  }
+}
+
+// ── Status chip (smaller variant) ────────────────────────────
+.chip {
+  flex-shrink: 0;
+  border-radius: v.$radius-full;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid v.$border-soft;
+  background: transparent;
+  color: v.$text-muted;
+  cursor: pointer;
+  transition: v.$transition;
+
+  &:hover {
+    color: v.$text-secondary;
+  }
+}
+
+.chipActive {
+  background: v.$surface-hover;
+  border-color: v.$border-medium;
+  color: v.$text-primary;
+}
+
+// ── Grid ─────────────────────────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+// ── Skeleton ─────────────────────────────────────────────────
+.skeleton {
+  aspect-ratio: 2 / 3;
+  border-radius: v.$radius-md;
+  background: v.$surface-light;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+// ── Empty state ───────────────────────────────────────────────
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.emptyIcon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  color: v.$text-dim;
+}
+
+.emptyText {
+  color: v.$text-muted;
+}
+
+.emptyLink {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: v.$indigo-400;
+  text-decoration: none;
+  transition: v.$transition;
+
+  &:hover {
+    color: v.$indigo-300;
+  }
+}

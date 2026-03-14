@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ================================================================
+// USERS
+// ================================================================
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  username     String   @unique
+  displayName  String
+  passwordHash String?
+  avatarUrl    String?
+  bio          String?
+  googleId      String?  @unique
+  needsUsername Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  entries          MediaEntry[]
+  sentRequests     FriendRequest[] @relation("SentRequests")
+  receivedRequests FriendRequest[] @relation("ReceivedRequests")
+  friendsOf        Friendship[]    @relation("FriendA")
+  friendsWith      Friendship[]    @relation("FriendB")
+  recommendations  Recommendation[]
+
+  @@map("users")
+}
+
+// ================================================================
+// MEDIA CATALOGUE (shared, one row per title)
+// ================================================================
+model Media {
+  id             String    @id @default(uuid())
+  externalId     String
+  type           MediaType
+  title          String
+  author         String?
+  director       String?
+  coverImageUrl  String?
+  releaseYear    Int?
+  genre          String[]
+  totalPages     Int?
+  totalEpisodes  Int?
+  totalSeasons   Int?
+  synopsis       String?
+  externalRating Float?
+  createdAt      DateTime  @default(now())
+
+  entries MediaEntry[]
+
+  @@unique([externalId, type])
+  @@map("media")
+}
+
+enum MediaType {
+  BOOK
+  MOVIE
+  TV_SHOW
+}
+
+// ================================================================
+// MEDIA ENTRIES (per-user tracking records)
+// ================================================================
+model MediaEntry {
+  id              String      @id @default(uuid())
+  userId          String
+  mediaId         String
+  status          EntryStatus
+  userRating      Int?
+  review          String?
+  startedAt       DateTime?
+  completedAt     DateTime?
+  pagesRead       Int?
+  episodesWatched Int?
+  currentSeason   Int?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  media Media @relation(fields: [mediaId], references: [id])
+
+  @@unique([userId, mediaId])
+  @@map("media_entries")
+}
+
+enum EntryStatus {
+  WANT
+  IN_PROGRESS
+  COMPLETED
+  DROPPED
+}
+
+// ================================================================
+// FRIEND REQUESTS
+// ================================================================
+model FriendRequest {
+  id         String              @id @default(uuid())
+  senderId   String
+  receiverId String
+  status     FriendRequestStatus @default(PENDING)
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  sender   User @relation("SentRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+  @@map("friend_requests")
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// ================================================================
+// FRIENDSHIPS (userAId < userBId enforced at app layer)
+// ================================================================
+model Friendship {
+  id        String   @id @default(uuid())
+  userAId   String
+  userBId   String
+  createdAt DateTime @default(now())
+
+  userA User @relation("FriendA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB User @relation("FriendB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  @@unique([userAId, userBId])
+  @@map("friendships")
+}
+
+// ================================================================
+// RECOMMENDATIONS (AI-generated, cached)
+// ================================================================
+model Recommendation {
+  id            String    @id @default(uuid())
+  userId        String
+  mediaType     MediaType
+  title         String
+  reason        String
+  externalId    String?
+  coverImageUrl String?
+  generatedAt   DateTime  @default(now())
+  dismissed     Boolean   @default(false)
+  saved         Boolean   @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("recommendations")
+}

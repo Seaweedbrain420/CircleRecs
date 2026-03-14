@@ -1,0 +1,254 @@
+@use '../styles/variables' as v;
+
+// ── Page wrapper ──────────────────────────────────────────
+.page {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.heading {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: v.$text-primary;
+}
+
+// ── Card ──────────────────────────────────────────────────
+.card {
+  border-radius: v.$radius-lg;
+  border: 1px solid v.$border-subtle;
+  background: v.$surface-soft;
+  padding: 1.5rem;
+}
+
+// ── Avatar row ────────────────────────────────────────────
+.avatarRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.avatar {
+  display: flex;
+  height: 4rem;
+  width: 4rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: v.$radius-full;
+  background: v.$indigo-600;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.avatarName {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: v.$text-primary;
+}
+
+.avatarHandle {
+  font-size: 0.875rem;
+  color: v.$text-muted;
+}
+
+// ── Field rows (view mode) ────────────────────────────────
+.fieldList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: v.$text-muted;
+}
+
+.fieldValue {
+  font-size: 0.875rem;
+  color: v.$text-primary;
+}
+
+.fieldValueMuted {
+  color: v.$text-subtle;
+}
+
+// ── Edit form ─────────────────────────────────────────────
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formField {
+  // container for a label + input group
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: v.$text-muted2;
+}
+
+.input {
+  width: 100%;
+  border-radius: v.$radius-sm;
+  border: 1px solid v.$border-soft;
+  background: v.$surface-light;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: v.$text-primary;
+  outline: none;
+  transition: v.$transition;
+
+  &::placeholder {
+    color: v.$text-subtle;
+  }
+
+  &:focus {
+    border-color: v.$indigo-400;
+  }
+}
+
+// ── Username field (with @ prefix) ────────────────────────
+.usernameWrapper {
+  position: relative;
+}
+
+.usernamePrefix {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  color: v.$text-subtle;
+  pointer-events: none;
+}
+
+.inputUsername {
+  @extend .input;
+  padding-left: 1.75rem;
+}
+
+.fieldError {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: v.$red-400;
+}
+
+.fieldHint {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: v.$text-subtle;
+}
+
+// ── Textarea ──────────────────────────────────────────────
+.textarea {
+  width: 100%;
+  resize: none;
+  border-radius: v.$radius-sm;
+  border: 1px solid v.$border-soft;
+  background: v.$surface-light;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: v.$text-primary;
+  outline: none;
+  transition: v.$transition;
+
+  &::placeholder {
+    color: v.$text-subtle;
+  }
+
+  &:focus {
+    border-color: v.$indigo-400;
+  }
+}
+
+.charCount {
+  margin-top: 0.25rem;
+  text-align: right;
+  font-size: 0.75rem;
+  color: v.$text-subtle;
+}
+
+// ── Form action buttons ───────────────────────────────────
+.formActions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.btnSave {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: v.$radius-sm;
+  background: v.$indigo-600;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #fff;
+  transition: v.$transition;
+  cursor: pointer;
+  border: none;
+
+  &:hover:not(:disabled) {
+    background: v.$indigo-500;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btnCancel {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: v.$radius-sm;
+  border: 1px solid v.$border-soft;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: v.$text-muted2;
+  background: transparent;
+  transition: v.$transition;
+  cursor: pointer;
+
+  &:hover {
+    border-color: v.$border-medium;
+    color: v.$text-primary;
+  }
+}
+
+.btnEdit {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: v.$radius-sm;
+  border: 1px solid v.$border-soft;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: v.$text-muted2;
+  background: transparent;
+  transition: v.$transition;
+  cursor: pointer;
+
+  &:hover {
+    border-color: v.$border-medium;
+    color: v.$text-primary;
+  }
+}
+
+.btnIcon {
+  height: 0.875rem;
+  width: 0.875rem;
+}
