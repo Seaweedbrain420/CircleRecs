@@ -38,8 +38,9 @@ export const sendRequestThunk = createAsyncThunk(
   async (receiverId: string, { rejectWithValue }) => {
     try {
       return await friendsService.sendRequest(receiverId)
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to send request')
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } }
+      return rejectWithValue(error.response?.data?.message || 'Failed to send request')
     }
   },
 )

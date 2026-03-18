@@ -8,6 +8,7 @@ interface FriendActivityEntry extends MediaEntry {
 
 interface MediaState {
   library: MediaEntry[]
+  dashboardInProgress: MediaEntry[]
   searchResults: MediaSearchResult[]
   friendActivity: FriendActivityEntry[]
   currentFilter: { type?: MediaType; status?: EntryStatus }
@@ -18,6 +19,7 @@ interface MediaState {
 
 const initialState: MediaState = {
   library: [],
+  dashboardInProgress: [],
   searchResults: [],
   friendActivity: [],
   currentFilter: {},
@@ -45,8 +47,9 @@ export const addEntryThunk = createAsyncThunk(
   async (payload: CreateEntryPayload, { rejectWithValue }) => {
     try {
       return await mediaService.addEntry(payload)
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to add')
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } }
+      return rejectWithValue(error.response?.data?.message || 'Failed to add')
     }
   },
 )
@@ -65,6 +68,10 @@ export const deleteEntryThunk = createAsyncThunk(
     return entryId
   },
 )
+
+export const fetchInProgressThunk = createAsyncThunk('media/fetchInProgress', async () => {
+  return mediaService.getLibrary(undefined, 'IN_PROGRESS')
+})
 
 export const fetchFriendActivityThunk = createAsyncThunk('media/friendActivity', async () => {
   return mediaService.getFriendActivity()
@@ -108,6 +115,10 @@ const mediaSlice = createSlice({
 
       .addCase(deleteEntryThunk.fulfilled, (state, action) => {
         state.library = state.library.filter((e) => e.id !== action.payload)
+      })
+
+      .addCase(fetchInProgressThunk.fulfilled, (state, action) => {
+        state.dashboardInProgress = action.payload
       })
 
       .addCase(fetchFriendActivityThunk.fulfilled, (state, action) => {

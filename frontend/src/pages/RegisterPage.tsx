@@ -29,7 +29,7 @@ export default function RegisterPage() {
       return
     }
     setConfirmError('')
-    dispatch(registerThunk({
+    await dispatch(registerThunk({
       email: form.email,
       username: form.username,
       displayName: form.displayName,

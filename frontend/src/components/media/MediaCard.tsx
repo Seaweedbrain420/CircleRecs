@@ -1,9 +1,10 @@
 import { useRef, useState, useEffect } from 'react'
-import { BookOpen, Film, Tv, Star, ChevronDown, Check } from 'lucide-react'
+import { Star, ChevronDown, Check } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAppDispatch } from '@/store'
 import { updateEntryThunk } from '@/store/slices/mediaSlice'
 import type { MediaEntry, EntryStatus } from '@/types/media.types'
+import { TYPE_ICON } from '@/lib/mediaConstants'
 import { cn } from '@/lib/utils'
 import styles from './MediaCard.module.scss'
 
@@ -15,12 +16,6 @@ const STATUS_LABELS: Record<EntryStatus, string> = {
 }
 
 const ALL_STATUSES: EntryStatus[] = ['WANT', 'IN_PROGRESS', 'COMPLETED', 'DROPPED']
-
-const TYPE_ICON = {
-  BOOK: BookOpen,
-  MOVIE: Film,
-  TV_SHOW: Tv,
-}
 
 interface MediaCardProps {
   entry: MediaEntry
@@ -78,6 +73,13 @@ export default function MediaCard({ entry, editable = false, onClick }: MediaCar
 
   const handleCompletedSave = async (e: React.MouseEvent) => {
     e.stopPropagation()
+    if (rating) {
+      const parsed = parseInt(rating, 10)
+      if (isNaN(parsed) || parsed < 1 || parsed > 10) {
+        toast.error('Rating must be between 1 and 10')
+        return
+      }
+    }
     setSaving(true)
     setOpen(false)
     setPendingStatus(null)
@@ -86,7 +88,7 @@ export default function MediaCard({ entry, editable = false, onClick }: MediaCar
         entryId: entry.id,
         payload: {
           status: 'COMPLETED',
-          ...(rating ? { userRating: parseInt(rating) } : {}),
+          ...(rating ? { userRating: parseInt(rating, 10) } : {}),
         },
       }),
     )
@@ -196,7 +198,7 @@ export default function MediaCard({ entry, editable = false, onClick }: MediaCar
         {media.releaseYear && (
           <p className={styles.year}>{media.releaseYear}</p>
         )}
-        {entry.userRating && (
+        {entry.userRating != null && (
           <div className={styles.ratingBadge}>
             <Star className={styles.ratingBadgeIcon} />
             <span className={styles.ratingBadgeText}>{entry.userRating}/10</span>

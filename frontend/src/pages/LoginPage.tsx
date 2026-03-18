@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    dispatch(loginThunk({ email, password }))
+    await dispatch(loginThunk({ email, password }))
   }
 
   const handleGoogleLogin = () => {

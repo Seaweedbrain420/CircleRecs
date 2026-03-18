@@ -35,9 +35,7 @@ export default function SearchPage() {
 
   const handleTypeChange = (t: MediaType) => {
     setType(t)
-    if (debouncedQuery.trim().length >= 2) {
-      dispatch(searchMediaThunk({ type: t, query: debouncedQuery }))
-    }
+    // The useEffect already re-runs when `type` changes, so no manual dispatch needed
   }
 
   const handleAdd = (result: MediaSearchResult) => {
@@ -89,7 +87,7 @@ export default function SearchPage() {
         </div>
       )}
 
-      {!isSearching && query.length >= 2 && searchResults.length === 0 && (
+      {!isSearching && debouncedQuery.length >= 2 && searchResults.length === 0 && (
         <p className={styles.noResults}>No results found</p>
       )}
 

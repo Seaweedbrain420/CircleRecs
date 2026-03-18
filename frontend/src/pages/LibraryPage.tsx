@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { BookOpen, Film, Tv, Plus } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { fetchLibraryThunk, setFilter } from '@/store/slices/mediaSlice'
@@ -48,13 +49,13 @@ export default function LibraryPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <h1 className={styles.heading}>My Library</h1>
-        <a
-          href="/search"
+        <Link
+          to="/search"
           className={styles.addBtn}
         >
           <Plus className={styles.addBtnIcon} />
           Add
-        </a>
+        </Link>
       </div>
 
       {/* Type tabs */}
@@ -94,9 +95,9 @@ export default function LibraryPage() {
         <div className={styles.empty}>
           <BookOpen className={styles.emptyIcon} />
           <p className={styles.emptyText}>Nothing here yet.</p>
-          <a href="/search" className={styles.emptyLink}>
+          <Link to="/search" className={styles.emptyLink}>
             Search and add something →
-          </a>
+          </Link>
         </div>
       ) : (
         <div className={styles.grid}>

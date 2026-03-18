@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Sparkles, Bookmark, X, RefreshCw, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAppDispatch, useAppSelector } from '@/store'
@@ -8,13 +8,8 @@ import {
   dismissRecommendationThunk,
   saveRecommendationThunk,
 } from '@/store/slices/recommendationsSlice'
+import { TYPE_LABELS } from '@/lib/mediaConstants'
 import styles from './RecommendationsPage.module.scss'
-
-const TYPE_LABELS: Record<string, string> = {
-  BOOK: 'Book',
-  MOVIE: 'Movie',
-  TV_SHOW: 'TV Show',
-}
 
 export default function RecommendationsPage() {
   const dispatch = useAppDispatch()
@@ -45,8 +40,8 @@ export default function RecommendationsPage() {
     toast.success('Saved to your list')
   }
 
-  const unsaved = items.filter((r) => !r.saved)
-  const saved = items.filter((r) => r.saved)
+  const unsaved = useMemo(() => items.filter((r) => !r.saved), [items])
+  const saved = useMemo(() => items.filter((r) => r.saved), [items])
 
   return (
     <div className={styles.page}>

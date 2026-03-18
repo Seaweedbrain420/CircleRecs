@@ -27,13 +27,20 @@ export default function AddEntryModal({ media }: AddEntryModalProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (rating) {
+      const parsed = parseInt(rating, 10)
+      if (isNaN(parsed) || parsed < 1 || parsed > 10) {
+        toast.error('Rating must be between 1 and 10')
+        return
+      }
+    }
     setIsSubmitting(true)
     const result = await dispatch(
       addEntryThunk({
         mediaType: media.type,
         externalId: media.externalId,
         status,
-        userRating: rating ? parseInt(rating) : undefined,
+        userRating: rating ? parseInt(rating, 10) : undefined,
       }),
     )
     setIsSubmitting(false)

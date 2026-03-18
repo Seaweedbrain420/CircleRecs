@@ -36,7 +36,7 @@ function App() {
 
   return (
     <div>
-      <Toaster position="bottom-right" theme="dark" richColors />
+      <Toaster position="bottom-right" theme={theme} richColors />
       <BrowserRouter>
         <Routes>
           {/* Public */}

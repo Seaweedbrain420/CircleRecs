@@ -56,6 +56,9 @@ api.interceptors.response.use(
           processQueue(null, newToken)
           originalRequest.headers.Authorization = `Bearer ${newToken}`
           return api(originalRequest)
+        } else {
+          processQueue(new Error('Token refresh failed'), null)
+          return Promise.reject(new Error('Token refresh failed'))
         }
       } catch (refreshError) {
         processQueue(refreshError, null)

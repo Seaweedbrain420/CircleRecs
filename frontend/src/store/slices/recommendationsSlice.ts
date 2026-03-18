@@ -26,8 +26,9 @@ export const generateRecommendationsThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       return await recommendationsService.generate()
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || 'Failed to generate recommendations')
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } }
+      return rejectWithValue(error.response?.data?.message || 'Failed to generate recommendations')
     }
   },
 )

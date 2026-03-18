@@ -1,33 +1,28 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, Film, Tv, Sparkles, Users, ArrowRight } from 'lucide-react'
+import { BookOpen, Sparkles, Users, ArrowRight } from 'lucide-react'
 import { useAppDispatch, useAppSelector } from '@/store'
-import { fetchLibraryThunk, fetchFriendActivityThunk } from '@/store/slices/mediaSlice'
+import { fetchInProgressThunk, fetchFriendActivityThunk } from '@/store/slices/mediaSlice'
 import { fetchRecommendationsThunk } from '@/store/slices/recommendationsSlice'
 import { fetchSummaryThunk } from '@/store/slices/statsSlice'
+import { TYPE_ICON } from '@/lib/mediaConstants'
 import styles from './DashboardPage.module.scss'
-
-const TYPE_ICON: Record<string, React.ElementType> = {
-  BOOK: BookOpen,
-  MOVIE: Film,
-  TV_SHOW: Tv,
-}
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch()
   const user = useAppSelector((s) => s.auth.user)
-  const { library, friendActivity } = useAppSelector((s) => s.media)
+  const { dashboardInProgress, friendActivity } = useAppSelector((s) => s.media)
   const { items: recs } = useAppSelector((s) => s.recommendations)
   const { summary } = useAppSelector((s) => s.stats)
 
   useEffect(() => {
-    dispatch(fetchLibraryThunk({ status: 'IN_PROGRESS' }))
+    dispatch(fetchInProgressThunk())
     dispatch(fetchFriendActivityThunk())
     dispatch(fetchRecommendationsThunk())
     dispatch(fetchSummaryThunk())
   }, [dispatch])
 
-  const inProgress = library.filter((e) => e.status === 'IN_PROGRESS').slice(0, 8)
+  const inProgress = dashboardInProgress.slice(0, 8)
   const topRecs = recs.filter((r) => !r.saved).slice(0, 5)
 
   return (
@@ -118,7 +113,7 @@ export default function DashboardPage() {
                 <div className={styles.activityInfo}>
                   <p className={styles.activityTitle}>{entry.media?.title}</p>
                   <p className={styles.activityMeta}>
-                    <span className={styles.activityFriendName}>{(entry as any).user?.displayName}</span>
+                    <span className={styles.activityFriendName}>{entry.user?.displayName}</span>
                     {' '}completed this
                   </p>
                 </div>

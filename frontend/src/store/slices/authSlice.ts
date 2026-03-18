@@ -6,6 +6,7 @@ interface AuthState {
   user: UserProfile | null
   accessToken: string | null
   isAuthenticated: boolean
+  isInitializing: boolean
   isLoading: boolean
   error: string | null
 }
@@ -14,6 +15,7 @@ const initialState: AuthState = {
   user: null,
   accessToken: null,
   isAuthenticated: false,
+  isInitializing: true,
   isLoading: false,
   error: null,
 }
@@ -113,11 +115,13 @@ const authSlice = createSlice({
         state.accessToken = action.payload.accessToken
         state.user = action.payload.user
         state.isAuthenticated = true
+        state.isInitializing = false
       })
       .addCase(refreshTokenThunk.rejected, (state) => {
         state.user = null
         state.accessToken = null
         state.isAuthenticated = false
+        state.isInitializing = false
       })
   },
 })

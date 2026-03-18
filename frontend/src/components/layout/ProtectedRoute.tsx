@@ -2,8 +2,10 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAppSelector } from '@/store'
 
 export default function ProtectedRoute() {
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth)
+  const { isAuthenticated, isInitializing, user } = useAppSelector((state) => state.auth)
   const location = useLocation()
+
+  if (isInitializing) return null
 
   if (!isAuthenticated) return <Navigate to="/login" replace />
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Search, UserPlus, UserCheck, UserX, Loader2, Users } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAppDispatch, useAppSelector } from '@/store'
@@ -45,22 +45,30 @@ export default function FriendsPage() {
   }
 
   const handleRespond = async (requestId: string, accept: boolean) => {
-    await dispatch(respondRequestThunk({ requestId, accept }))
-    if (accept) {
-      dispatch(fetchFriendsThunk())
-      toast.success('Friend request accepted')
+    const result = await dispatch(respondRequestThunk({ requestId, accept }))
+    if (respondRequestThunk.fulfilled.match(result)) {
+      if (accept) {
+        dispatch(fetchFriendsThunk())
+        toast.success('Friend request accepted')
+      } else {
+        toast('Request declined')
+      }
     } else {
-      toast('Request declined')
+      toast.error('Could not respond to request')
     }
   }
 
   const handleRemove = async (friendId: string) => {
-    await dispatch(removeFriendThunk(friendId))
-    toast('Friend removed')
+    const result = await dispatch(removeFriendThunk(friendId))
+    if (removeFriendThunk.fulfilled.match(result)) {
+      toast('Friend removed')
+    } else {
+      toast.error('Could not remove friend')
+    }
   }
 
-  const friendIds = new Set(friends.map((f) => f.friend.id))
-  const pendingReceiverIds = new Set(pendingRequests.map((r) => r.senderId))
+  const friendIds = useMemo(() => new Set(friends.map((f) => f.friend.id)), [friends])
+  const pendingReceiverIds = useMemo(() => new Set(pendingRequests.map((r) => r.senderId)), [pendingRequests])
 
   return (
     <div className={styles.page}>
