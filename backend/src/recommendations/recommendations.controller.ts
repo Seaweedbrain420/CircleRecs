@@ -1,28 +1,30 @@
-import { Controller, Get, Post, Patch, Param, Req } from '@nestjs/common';
-import type { Request } from 'express';
+import { Controller, Get, Post, Patch, Param } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { RecommendationsService } from './recommendations.service';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @Controller('recommendations')
 export class RecommendationsController {
   constructor(private readonly recService: RecommendationsService) {}
 
   @Get()
-  getAll(@Req() req: Request) {
-    return this.recService.getRecommendations((req.user as any).id);
+  getAll(@CurrentUser() user: { id: string }) {
+    return this.recService.getRecommendations(user.id);
   }
 
+  @Throttle({ default: { ttl: 60000, limit: 5 } })
   @Post('generate')
-  generate(@Req() req: Request) {
-    return this.recService.generate((req.user as any).id);
+  generate(@CurrentUser() user: { id: string }) {
+    return this.recService.generate(user.id);
   }
 
   @Patch(':id/dismiss')
-  dismiss(@Req() req: Request, @Param('id') id: string) {
-    return this.recService.dismiss((req.user as any).id, id);
+  dismiss(@CurrentUser() user: { id: string }, @Param('id') id: string) {
+    return this.recService.dismiss(user.id, id);
   }
 
   @Patch(':id/save')
-  save(@Req() req: Request, @Param('id') id: string) {
-    return this.recService.save((req.user as any).id, id);
+  save(@CurrentUser() user: { id: string }, @Param('id') id: string) {
+    return this.recService.save(user.id, id);
   }
 }

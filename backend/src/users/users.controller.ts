@@ -1,15 +1,14 @@
-import { Controller, Get, Patch, Param, Body, Req, NotFoundException } from '@nestjs/common';
-import type { Request } from 'express';
+import { Controller, Get, Patch, Param, Body, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
-import type { UpdateProfileDto } from './users.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  getMe(@Req() req: Request) {
-    const user = req.user as any;
+  getMe(@CurrentUser() user: { id: string; email: string; username: string; displayName: string; avatarUrl: string | null; bio: string | null; needsUsername: boolean; createdAt: Date }) {
     return {
       id: user.id,
       email: user.email,
@@ -23,8 +22,8 @@ export class UsersController {
   }
 
   @Patch('me')
-  updateMe(@Req() req: Request, @Body() body: UpdateProfileDto) {
-    return this.usersService.updateProfile((req.user as any).id, body);
+  updateMe(@CurrentUser() user: { id: string }, @Body() body: UpdateProfileDto) {
+    return this.usersService.updateProfile(user.id, body);
   }
 
   @Get(':username')

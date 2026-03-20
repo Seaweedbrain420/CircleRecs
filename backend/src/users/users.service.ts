@@ -1,12 +1,9 @@
 import { Injectable, ConflictException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisService } from '../redis/redis.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
-export interface UpdateProfileDto {
-  displayName?: string;
-  bio?: string;
-  username?: string;
-}
+export { UpdateProfileDto };
 
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,20}$/;
 

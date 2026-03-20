@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { MediaType, EntryStatus } from '@prisma/client';
 import { MediaService } from './media.service';
@@ -23,7 +24,14 @@ export class MediaController {
     @Query('type') type: MediaType,
     @Query('q') query: string,
   ) {
-    return this.mediaService.search(type, query);
+    const validTypes: MediaType[] = ['BOOK', 'MOVIE', 'TV_SHOW'];
+    if (!type || !validTypes.includes(type)) {
+      throw new BadRequestException('type must be one of: BOOK, MOVIE, TV_SHOW');
+    }
+    if (!query || query.trim().length < 2) {
+      throw new BadRequestException('q must be at least 2 characters');
+    }
+    return this.mediaService.search(type, query.trim());
   }
 
   @Get('library')

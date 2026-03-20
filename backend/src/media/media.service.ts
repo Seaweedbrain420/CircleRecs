@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { MediaType, EntryStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { OmdbService } from './external/omdb.service';
-import { GoogleBooksService } from './external/google-books.service';
+import { OmdbService, type OmdbSearchResult } from './external/omdb.service';
+import { GoogleBooksService, type BookSearchResult } from './external/google-books.service';
 import { CreateEntryDto } from './dto/create-entry.dto';
 import { UpdateEntryDto } from './dto/update-entry.dto';
 
@@ -28,7 +28,7 @@ export class MediaService {
     });
 
     if (!media) {
-      let details: any = null;
+      let details: OmdbSearchResult | BookSearchResult | null = null;
       if (type === 'BOOK') {
         details = await this.books.getDetails(externalId);
       } else {
@@ -98,7 +98,12 @@ export class MediaService {
     return this.prisma.mediaEntry.update({
       where: { id: entryId },
       data: {
-        ...dto,
+        status: dto.status,
+        userRating: dto.userRating,
+        review: dto.review,
+        pagesRead: dto.pagesRead,
+        episodesWatched: dto.episodesWatched,
+        currentSeason: dto.currentSeason,
         startedAt: dto.startedAt ? new Date(dto.startedAt) : undefined,
         completedAt: dto.completedAt ? new Date(dto.completedAt) : undefined,
       },
@@ -129,21 +134,15 @@ export class MediaService {
   }
 
   async getFriendActivity(userId: string) {
-    // Get all friend IDs for this user
-    const friendships = await this.prisma.friendship.findMany({
-      where: { OR: [{ userAId: userId }, { userBId: userId }] },
-    });
-
-    const friendIds = friendships.map((f) =>
-      f.userAId === userId ? f.userBId : f.userAId,
-    );
-
-    if (friendIds.length === 0) return [];
-
     return this.prisma.mediaEntry.findMany({
       where: {
-        userId: { in: friendIds },
         status: { in: ['COMPLETED', 'IN_PROGRESS'] },
+        user: {
+          OR: [
+            { friendsOf: { some: { userBId: userId } } },
+            { friendsWith: { some: { userAId: userId } } },
+          ],
+        },
       },
       include: {
         media: true,

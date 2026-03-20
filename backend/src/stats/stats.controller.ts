@@ -1,18 +1,18 @@
-import { Controller, Get, Param, ParseIntPipe, Req } from '@nestjs/common';
-import type { Request } from 'express';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { StatsService } from './stats.service';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @Controller('stats')
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
   @Get('summary')
-  getSummary(@Req() req: Request) {
-    return this.statsService.getSummary((req.user as any).id);
+  getSummary(@CurrentUser() user: { id: string }) {
+    return this.statsService.getSummary(user.id);
   }
 
   @Get('year/:year')
-  getYear(@Req() req: Request, @Param('year', ParseIntPipe) year: number) {
-    return this.statsService.getYearStats((req.user as any).id, year);
+  getYear(@CurrentUser() user: { id: string }, @Param('year', ParseIntPipe) year: number) {
+    return this.statsService.getYearStats(user.id, year);
   }
 }

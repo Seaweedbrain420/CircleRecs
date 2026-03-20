@@ -99,8 +99,26 @@ Respond ONLY with a valid JSON array, no markdown, no explanation:
         ? await this.callOpenAI(prompt)
         : await this.callClaude(prompt);
 
-      const parsed: RawRecommendation[] = JSON.parse(text);
-      return parsed.slice(0, 5);
+      const parsed: unknown = JSON.parse(text);
+      if (!Array.isArray(parsed)) {
+        throw new Error('AI response is not an array');
+      }
+      const validTypes = new Set(['BOOK', 'MOVIE', 'TV_SHOW']);
+      const validated: RawRecommendation[] = parsed
+        .filter(
+          (item): item is RawRecommendation =>
+            item !== null &&
+            typeof item === 'object' &&
+            typeof (item as RawRecommendation).title === 'string' &&
+            typeof (item as RawRecommendation).reason === 'string' &&
+            validTypes.has((item as RawRecommendation).type),
+        )
+        .slice(0, 5);
+
+      if (validated.length === 0) {
+        throw new Error('AI response contained no valid recommendations');
+      }
+      return validated;
     } catch (err) {
       this.logger.error('AI API error', err);
       throw new Error('Failed to generate recommendations');

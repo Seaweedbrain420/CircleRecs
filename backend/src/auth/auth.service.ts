@@ -2,7 +2,9 @@ import {
   Injectable,
   UnauthorizedException,
   ConflictException,
+  InternalServerErrorException,
 } from '@nestjs/common';
+import type { Prisma } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
@@ -57,14 +59,23 @@ export class AuthService {
     }
 
     const passwordHash = await bcrypt.hash(dto.password, 12);
-    const user = await this.prisma.user.create({
-      data: {
-        email: dto.email,
-        username: dto.username,
-        displayName: dto.displayName,
-        passwordHash,
-      },
-    });
+    let user: Awaited<ReturnType<typeof this.prisma.user.create>>;
+    try {
+      user = await this.prisma.user.create({
+        data: {
+          email: dto.email,
+          username: dto.username,
+          displayName: dto.displayName,
+          passwordHash,
+        },
+      });
+    } catch (err) {
+      const prismaErr = err as Prisma.PrismaClientKnownRequestError;
+      if (prismaErr.code === 'P2002') {
+        throw new ConflictException('Email or username already in use');
+      }
+      throw new InternalServerErrorException();
+    }
 
     const { passwordHash: _, ...safeUser } = user;
     const { accessToken, refreshToken } = this.issueTokens(user.id, user.email);
@@ -138,23 +149,34 @@ export class AuthService {
     });
 
     if (!user) {
-      const baseUsername = profile.email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_');
-      let username = baseUsername;
-      let count = 0;
-      while (await this.prisma.user.findUnique({ where: { username } })) {
-        username = `${baseUsername}${++count}`;
-      }
+      const baseUsername = profile.email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '_').slice(0, 15);
 
-      user = await this.prisma.user.create({
-        data: {
-          email: profile.email,
-          username,
-          displayName: profile.displayName,
-          googleId: profile.googleId,
-          avatarUrl: profile.avatarUrl,
-          needsUsername: true,
-        },
-      });
+      // Try the base username first, then append random suffixes on P2002
+      let username = baseUsername;
+      let attempts = 0;
+      while (true) {
+        try {
+          user = await this.prisma.user.create({
+            data: {
+              email: profile.email,
+              username,
+              displayName: profile.displayName,
+              googleId: profile.googleId,
+              avatarUrl: profile.avatarUrl,
+              needsUsername: true,
+            },
+          });
+          break;
+        } catch (err) {
+          const prismaErr = err as Prisma.PrismaClientKnownRequestError;
+          if (prismaErr.code === 'P2002' && attempts < 5) {
+            username = `${baseUsername}_${Math.floor(Math.random() * 100000)}`;
+            attempts++;
+          } else {
+            throw err;
+          }
+        }
+      }
       // Add the temporary username to Redis; will be swapped when user sets their real one
       await this.redis.addUsername(username);
     } else if (!user.googleId) {

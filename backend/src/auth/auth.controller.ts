@@ -8,6 +8,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
@@ -42,7 +43,8 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const token = req.cookies['refresh_token'];
+    const token = req.cookies?.['refresh_token'];
+    if (!token) throw new UnauthorizedException('No refresh token');
     return this.authService.refresh(token, res);
   }
 

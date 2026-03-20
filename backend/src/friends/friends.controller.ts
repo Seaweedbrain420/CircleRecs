@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { FriendsService } from './friends.service';
 import { UsersService } from '../users/users.service';
@@ -35,7 +36,13 @@ export class FriendsController {
     @CurrentUser() user: { id: string },
     @Query('q') query: string,
   ) {
-    return this.usersService.searchByUsername(query, user.id);
+    if (!query || query.trim().length < 2) {
+      throw new BadRequestException('Query must be at least 2 characters');
+    }
+    if (query.length > 50) {
+      throw new BadRequestException('Query must be at most 50 characters');
+    }
+    return this.usersService.searchByUsername(query.trim(), user.id);
   }
 
   @Post('requests')

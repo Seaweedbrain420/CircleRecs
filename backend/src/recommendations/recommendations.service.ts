@@ -17,15 +17,15 @@ export class RecommendationsService {
   }
 
   async generate(userId: string) {
+    // Fetch AI recommendations first — if this fails, nothing is deleted
     const raws = await this.claude.generateRecommendations(userId);
 
-    // Delete existing undismissed recs before inserting fresh ones
-    await this.prisma.recommendation.deleteMany({
-      where: { userId, dismissed: false, saved: false },
-    });
-
-    const created = await this.prisma.$transaction(
-      raws.map((r) =>
+    // Delete and re-insert atomically now that we have a valid response
+    const [, ...created] = await this.prisma.$transaction([
+      this.prisma.recommendation.deleteMany({
+        where: { userId, dismissed: false, saved: false },
+      }),
+      ...raws.map((r) =>
         this.prisma.recommendation.create({
           data: {
             userId,
@@ -35,7 +35,7 @@ export class RecommendationsService {
           },
         }),
       ),
-    );
+    ]);
 
     return created;
   }
